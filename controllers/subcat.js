@@ -7,14 +7,14 @@ let add = async (req, res, next) => {
         res.status(333).send({ 'con': false, msg: 'you already have name', exitSubCat })
     } else {
 
-        let data = new DB({ name: req.body.name, category: req.body.category, image: req.body.filename });
+        let data = new DB(req.body);
         let result = await data.save();
         let category = await CatDB.findByIdAndUpdate(req.body.category, { $push: { subcat: result._id } });
         res.send({ "con": true, 'msg': "Role Sub Category", result });
     }
 }
 let all = async (req, res, next) => {
-    let result = await DB.find();
+    let result = await DB.find().populate('childcats');
     res.send({ "con": true, 'msg': "All Sub Categories ", result });
 }
 let get = async (req, res, next) => {

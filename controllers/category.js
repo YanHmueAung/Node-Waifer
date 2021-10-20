@@ -1,11 +1,11 @@
 const DB = require('../models/category');
 
 let add = async (req, res, next) => {
-    let existName = await DB.find({ name: req.body.name })
+    let existName = await DB.findOne({ name: req.body.name })
     if (existName) {
         res.status(310).send({ 'con': false, msg: 'category Exist', existName });
     } else {
-        let data = new DB({ name: req.body.name, image: req.body.filename });
+        let data = new DB(req.body);
         let result = await data.save();
         res.send({ "con": true, 'msg': "Role category", result });
     }

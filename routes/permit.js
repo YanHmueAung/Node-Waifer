@@ -1,12 +1,15 @@
 const router = require('express-promise-router')();
 const PermitController = require('../controllers/permit');
+const { permit, AllSchema } = require('../utils/schema');
+const { validator, validateParam } = require('../utils/validator');
 
-router.post('/', PermitController.add);
+
+router.post('/', [validator(permit.create), PermitController.add]);
 router.get('/', PermitController.all);
 
 router.route('/:id')
-    .get(PermitController.get)
-    .patch(PermitController.patch)
-    .delete(PermitController.drop);
+    .get([validateParam(AllSchema.id, 'id'), PermitController.get])
+    .patch([validateParam(AllSchema.id, 'id'), PermitController.patch])
+    .delete([validateParam(AllSchema.id, 'id'), PermitController.drop]);
 
 module.exports = router;
