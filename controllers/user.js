@@ -1,4 +1,6 @@
 const DB = require('../models/user');
+const roleDB = require('../models/role');
+const permitDB = require('../models/permit');
 const Helper = require('../utils/helper');
 const Redis = require('../utils/redis');
 
@@ -110,13 +112,24 @@ let drop = async (req, res, next) => {
     let result = await DB.findByIdAndDelete(req.params.id);
     res.send({ "con": true, "msg": "Delete user", result })
 }
+const hasRoleByName = async (userId, roleName) => {
+    let role = await roleDB.findOne({ name: roleName });
+    return await hasRole(userId, role._id);
+
+}
 const hasRole = async (userId, checkRoleId) => {
     const user = await DB.findByIdAndUpdate(userId).populate('roles');
     const foundRole = user.roles.find((role) => role._id == checkRoleId);
     if (foundRole) return true;
     return false;
 }
-const hasPermit = async (req, res) => {
+
+const hasPermitByName = async (userId, permitName) => {
+    const permit = await permitDB.findOne({ name: permitName });
+    return await hasPermit(userId, permit._id);
+}
+
+const hasPermit = async (userId, permitId) => {
 
     const permitId = '615422353a8c772d6cad021b';
     //const permitId = '615528c79d737257b80f42cd';
