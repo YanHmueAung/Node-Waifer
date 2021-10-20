@@ -46,7 +46,7 @@ const Schema = {
     }, "product": {
         "create": Joi.object({
             "name": Joi.string().required(),
-            "price": Joi.Number().required(),
+            "price": Joi.string().required(),
             "brand": Joi.string().required(),
             "catid": Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
             "subcatid": Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),

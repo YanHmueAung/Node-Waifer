@@ -5,7 +5,7 @@ const { product, AllSchema } = require('../utils/schema');
 const { validator, validateParam } = require('../utils/validator');
 
 
-router.post('/', [validator(product, create), saveMultipleFiles(), ProductController.add]);
+router.post('/', [validator(product.create), saveMultipleFiles(), ProductController.add]);
 router.get('/', ProductController.all);
 
 router.route('/:id')

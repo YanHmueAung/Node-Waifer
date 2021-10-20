@@ -1,9 +1,8 @@
 const router = require('express-promise-router')();
 const RoleController = require('../controllers/role');
-const { validateToken, validateParam } = require('../utils/validator');
+const { validator, validateToken, validateParam } = require('../utils/validator');
 const { AllSchema } = require('../utils/schema');
 const { role } = require('../utils/schema');
-const { validator, validateParam } = require('../utils/validator');
 
 
 router.post('/', [validator(role.create), RoleController.add]);

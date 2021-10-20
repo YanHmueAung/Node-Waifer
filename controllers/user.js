@@ -131,9 +131,9 @@ const hasPermitByName = async (userId, permitName) => {
 
 const hasPermit = async (userId, permitId) => {
 
-    const permitId = '615422353a8c772d6cad021b';
+    //const permitId = '615422353a8c772d6cad021b';
     //const permitId = '615528c79d737257b80f42cd';
-    const userId = '61543c3dc8045f393417ea83';
+    //const userId = '61543c3dc8045f393417ea83';
     const user = await DB.findByIdAndUpdate(userId).populate('permits');
     const foundfirstPermit = await user.permits.find(permit => permit._id == permitId);
     if (foundfirstPermit) {
@@ -165,5 +165,7 @@ module.exports = {
     addPermit,
     removePermit,
     hasRole,
-    hasPermit
+    hasPermit,
+    hasPermitByName,
+    hasRoleByName
 }
