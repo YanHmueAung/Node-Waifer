@@ -5,7 +5,7 @@ const { validator, validateParam } = require('../utils/validator');
 
 router.post('/register', [validator(user.register), UserController.register]);
 router.get('/', UserController.all);
-router.post('/login', [validator(user.addRole), UserController.login]);
+router.post('/login', UserController.login);
 router.post('/add/role', [validator(user.addRole), UserController.addRole]);
 router.post('/remove/role', [validator(user.addRole), UserController.removeRole]);
 router.post('/add/permit', [validator(user.addPermit), UserController.addPermit]);

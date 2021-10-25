@@ -12,9 +12,11 @@ const validator = (Schema) => {
 const validateToken = () => {
     return async (req, res, next) => {
         if (!req.headers.authorization) {
-            res.send({ 'con': "no arer token" })
+            res.send({ 'con': "no barer token" })
         } else {
             let authenticated = await helper.verifyToken(req);
+            //console.log(authenticated)
+            req.body["user"] = authenticated;
             if (authenticated) {
                 next();
             } else {

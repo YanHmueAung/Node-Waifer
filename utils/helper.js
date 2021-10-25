@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 const Redis = require('./redis');
 
 let verifyToken = async req => {
-    let token = req => req.headers.authorization.split(" ")[1];
+    // console.log(req.headers.authorization);
+    let token = req.headers.authorization.split(" ")[1];
+    //console.log(token);
     let decode = jwt.verify(token, process.env.SECRET_KEY);
     return await Redis.getObj(decode.id);
     if (redisUser) {
