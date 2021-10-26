@@ -14,17 +14,17 @@ const validateToken = () => {
         if (!req.headers.authorization) {
             res.send({ 'con': "no barer token" })
         } else {
-            let authenticated = await helper.verifyToken(req);
-            //console.log(authenticated)
-            req.body["user"] = authenticated;
-            if (authenticated) {
+            let redisUser = await helper.verifyToken(req);
+            console.log('redisUser', redisUser)
+            req.body["user"] = redisUser;
+            if (redisUser) {
                 next();
             } else {
                 res.send({ "msg": "auth Error" })
             }
-            res.send({ "token": token });
+            //res.send({ "token": token });
         }
-        res.send({ "msg": req.headers })
+        //res.send({ "msg": req.headers })
     }
 }
 const validateParam = (Schema, name) => {

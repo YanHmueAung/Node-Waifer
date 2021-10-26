@@ -1,23 +1,45 @@
 const DB = require('../models/order');
+const ProductDB = require('../models/product');
+const OrderItemDB = require('../models/orderItem');
 
 let add = async (req, res, next) => {
     // let existName = await DB.findOne({ name: req.body.name })
     // if (existName) {
     //     res.status(310).send({ 'con': false, msg: 'category Exist', existName });
     // } else {
-    console.log(req.body);
+    console.log('REq.body', req.body);
     let data = new DB(req.body);
-    console.log(data);
+    console.log('DATA', data);
     let OrderObj = {
-        count: req.body.items.length
+        count: req.body.items.length,
+        user: req.body.user.id,
+        status: true,
+        total: 1900,
 
-        // user: { type: Schema.Types.ObjectId, required: true, ref: 'user' },
-        // total: { type: Number, required: true },
-        // status: { type: Boolean, required: true },
-        // items: [{ type: Schema.Types.ObjectId, required: true, ref: 'orderItem' }],
     }
+    let dbOrderResult = await new DB(OrderObj).save();
+    let itemsTotal = 0;
+    for (let item of req.body.items) {
+        let product = await ProductDB.findById(item.id);
+        let orderItem = {
+            order: dbOrderResult._id,
+            count: item.count,
+            product: product._id,
+            name: product.name,
+            images: product.images,
+            price: product.price,
+            discount: product.discount,
+            status: true
+        }
+        itemsTotal += (item.count * product.price) - product.discount;
+        let orderItemResult = await new OrderItemDB(orderItem).save();
 
-    res.send({ "con": true, 'msg': "Role category", "data": OrderObj });
+        await DB.findByIdAndUpdate(dbOrderResult._id, { $push: { items: orderItemResult._id } });
+    }
+    await DB.findByIdAndUpdate(dbOrderResult._id, { total: itemsTotal });
+    let result = await DB.findById(dbOrderResult._id)
+
+    res.send({ "con": true, 'msg': "Role category", "data": result });
 
 }
 let all = async (req, res, next) => {

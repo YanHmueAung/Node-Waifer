@@ -6,7 +6,7 @@ const OrderSchema = new Schema({
     user: { type: Schema.Types.ObjectId, required: true, ref: 'user' },
     total: { type: Number, required: true },
     status: { type: Boolean, required: true },
-    items: [{ type: Schema.Types.ObjectId, required: true, ref: 'orderItem' }],
+    items: [{ type: Schema.Types.ObjectId, ref: 'orderItem' }],
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }
 })
