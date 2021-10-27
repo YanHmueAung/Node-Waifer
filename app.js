@@ -40,13 +40,21 @@ app.use('/order', orderRouter);
 app.use('/api', apiRouter);
 
 
-app.get('/', (req, res) => {
-    throw new Error("not found");
-})
+// app.get('/', (req, res) => {
+//     throw new Error("not found");
+// })
 
-app.use((err, req, res, next) => {
-    err.status = err.status || 303;
-    res.status(err.status).json({ con: false, "msg": err.message });
-})
+// app.use((err, req, res, next) => {
+//     err.status = err.status || 303;
+//     res.status(err.status).json({ con: false, "msg": err.message });
+// })
+
+/********************Migration************* */
+let migrate = () => {
+    let migrator = require("./migration/migrate");
+    migrator.backup();
+
+}
+migrate()
 
 app.listen(process.env.PORT, console.log(`Running on ${process.env.PORT}`));
