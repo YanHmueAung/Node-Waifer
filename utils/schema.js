@@ -10,7 +10,8 @@ const Schema = {
         }),
         "login": Joi.object({
             "email": Joi.string().email().required(),
-            "phone": Joi.string().min(3).max(11).required()
+            "phone": Joi.string().min(3).max(11).required(),
+            "password": Joi.string().min(3).max(20).required()
         }),
         "addRole": Joi.object({
             "userid": Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
@@ -25,6 +26,9 @@ const Schema = {
     "AllSchema": {
         "id": Joi.object({
             "id": Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+        }),
+        "page": Joi.object({
+            "page": Joi.string().required()
         })
     }, "category": {
         "create": Joi.object({

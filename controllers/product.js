@@ -31,6 +31,15 @@ let drop = async (req, res, next) => {
     let result = await DB.findByIdAndDelete(req.params.id);
     res.send({ "con": true, "msg": "Delete prodcut ", result })
 }
+let paginate = async (req, res, next) => {
+    let page = req.params.page;
+    // let skipCount = Number(page) ==1?0:(Number(page)-1)*process.env.LIMIT;
+    // let result = await DB.find().skip(skipCount).limit(Number(process.env.LIMIT));
+
+    let skipCount = Number(page) * Number(process.env.LIMIT);
+    let result = await DB.find().skip(skipCount - Number(process.env.LIMIT)).limit(Number(process.env.LIMIT));
+    res.send({ con: true, 'msg': 'Single Product', result });
+}
 
 module.exports = {
     add,
@@ -38,4 +47,5 @@ module.exports = {
     get,
     patch,
     drop,
+    paginate
 }

@@ -7,9 +7,9 @@ let add = async (req, res, next) => {
     // if (existName) {
     //     res.status(310).send({ 'con': false, msg: 'category Exist', existName });
     // } else {
-    console.log('REq.body', req.body);
+    // console.log('REq.body', req.body);
     let data = new DB(req.body);
-    console.log('DATA', data);
+    // console.log('DATA', data);
     let OrderObj = {
         count: req.body.items.length,
         user: req.body.user.id,
@@ -66,6 +66,10 @@ let drop = async (req, res, next) => {
     let result = await DB.findByIdAndDelete(req.params.id);
     res.send({ "con": true, "msg": "Delete category", result })
 }
+let getMyOrder = async (req, res, next) => {
+    let result = await DB.find({ user: req.body.user.id }).populate("items");
+    res.send({ "con": true, "msg": "get success order", result });
+}
 
 module.exports = {
     add,
@@ -73,4 +77,5 @@ module.exports = {
     get,
     patch,
     drop,
+    getMyOrder
 }

@@ -27,6 +27,7 @@ const subcatRouter = require('./routes/subcat');
 const childRouter = require('./routes/childcat');
 const productRouter = require('./routes/product');
 const orderRouter = require('./routes/order');
+const apiRouter = require('./routes/api')
 
 app.use('/user', userRouter);
 app.use('/permit', permitRouter);
@@ -36,5 +37,11 @@ app.use('/subcat', subcatRouter);
 app.use('/childcat', childRouter);
 app.use('/product', productRouter);
 app.use('/order', orderRouter);
+app.use('/api', apiRouter);
+
+// app.use((err,req,res,next)=>{
+//     err.status=err.status || 303;
+//     res.status(err.status).json({con:false,"msg":err.message});
+// })
 
 app.listen(process.env.PORT, console.log(`Running on ${process.env.PORT}`));

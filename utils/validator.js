@@ -35,6 +35,14 @@ const validateParam = (Schema, name) => {
         else next();
     }
 }
+const validatePage = (Schema, name) => {
+
+    return (req, res, next) => {
+        let result = Schema.validate({ page: req['params'][name] });
+        if (result.error) res.send({ "msg": false, "message": result.error.details[0].message });
+        else next();
+    }
+}
 const validateRole = (roleName) => {
     return async (req, res, next) => {
         let authenticated = await helper.verifyToken(req);
@@ -61,4 +69,4 @@ const validatePermit = (permitName) => {
     }
 
 }
-module.exports = { validator, validateToken, validateParam, validateRole };
+module.exports = { validator, validateToken, validateParam, validateRole, validatePage };
