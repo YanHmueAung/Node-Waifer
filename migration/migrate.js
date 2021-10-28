@@ -11,13 +11,18 @@ const SubcatDB = require('../models/subcat');
 
 
 
-const storage = (file) => "./migration/" + file + '.json';
+const storage = (file) => "./migration/backup/" + file + '.json';
 
 const migrator = {
     backup: async (DB, file) => {
         let data = await DB.find();
         await writeFile(storage(file), data);
 
+    },
+    restore: async (DB, file) => {
+        let data = await readFile(storage(file));
+        let dataSaveResult = await DB.insertMany(data);
+        console.log(file, ' Migration Done');
     }
 }
 let backup = () => {
@@ -33,11 +38,23 @@ let backup = () => {
 
 
 }
+let migrate = async () => {
+    migrator.restore(UserDB, 'user');
+    migrator.restore(CategoryDB, 'category');
+    migrator.restore(ChildCatDB, 'childcat');
+    migrator.restore(OrderDB, 'order');
+    migrator.restore(OrderItemDB, 'orderItem');
+    migrator.restore(PermitDB, 'permit');
+    migrator.restore(ProductDB, 'product');
+    migrator.restore(RoleDB, 'role');
+    migrator.restore(SubcatDB, 'subcat');
+}
 
 const writeFile = async (filename, data) => await fs.writeFileSync(filename, JSON.stringify(data), 'utf8');
 const readFile = async (filename) => await JSON.parse(fs.readFileSync(filename, "utf8"));
 
 
 module.exports = {
-    backup
+    backup,
+    migrate
 }

@@ -52,9 +52,12 @@ app.use('/api', apiRouter);
 /********************Migration************* */
 let migrate = () => {
     let migrator = require("./migration/migrate");
+    //Backup from Database;
     //migrator.backup();
-    migrator.migrate();
+
+    //Migrate To Database;
+    // migrator.migrate();
 }
-//migrate()
+migrate()
 
 app.listen(process.env.PORT, console.log(`Running on ${process.env.PORT}`));
