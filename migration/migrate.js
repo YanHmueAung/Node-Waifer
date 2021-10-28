@@ -1,15 +1,16 @@
 const fs = require('fs');
+const storage = (file) => "./migration/" + file + '.json';
 let backup = async () => {
     let data = [{
         id: "lasdf", name: "aserwef"
     }]
-    //await fs.writeFileSync("./migration/text.txt", JSON.stringify(data), 'utf8');
-    let result = await fs.readFileSync("./migration/text.txt", "utf8");
-    result = JSON.parse(result);
-    console.log(typeof result);
-    console.log(result);
+    //await writeFile(storage + 'test.txt', data);
+    console.log(storage("Category"));
 
 }
+const writeFile = async (filename, data) => await fs.writeFileSync(filename, JSON.stringify(data), 'utf8');
+const readFile = async (filename) => await JSON.parse(fs.readFileSync(filename, "utf8"));
+
 
 module.exports = {
     backup
