@@ -1,10 +1,16 @@
 require('dotenv').config()
 const express = require('express'),
     app = express(),
-    bodyParser = require('body-parser'),
+    server = require('http').createServer(app),
+    { Server } = require('socket.io'),
+    io = new Server(server, {
+        origin: "*"
+    }),
+    path = require('path');
+bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
+    helper = require('./utils/helper'),
     fileUpload = require('express-fileupload');
-
 main().catch(err => console.log(err));
 async function main() {
     await mongoose.connect(`mongodb://localhost:27017/${process.env.DB_NAME}`, {
@@ -15,6 +21,9 @@ async function main() {
     });
 }
 
+
+//app.use('/static', express.static('./uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use(bodyParser.json());
 app.use(fileUpload());
 
@@ -44,10 +53,27 @@ app.use('/api', apiRouter);
 //     throw new Error("not found");
 // })
 
-// app.use((err, req, res, next) => {
-//     err.status = err.status || 303;
-//     res.status(err.status).json({ con: false, "msg": err.message });
-// })
+app.use((err, req, res, next) => {
+    err.status = err.status || 303;
+    res.status(err.status).json({ con: false, "msg": err.message });
+})
+
+io.of("/chat").use(async (socket, next) => {
+    let user = await helper.getTokenFromSocket(socket);
+    if (user == 'blank') {
+        next(new Error('Authentication Error By Tester'));
+    } else {
+        socket.userData = user;
+        next()
+    }
+}).on("connection", (socket) => {
+    require('./utils/chat').initialize(io, socket);
+})
+
+
+
+
+
 
 /********************Migration************* */
 let migrate = () => {
