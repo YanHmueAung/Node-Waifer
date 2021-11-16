@@ -1,7 +1,7 @@
 {
     "meta": {
-        "__export_time": 1635311411357,
-        "__export_app": "firecamp_v2.2.1 ↺",
+        "__export_time": 1637047813715,
+        "__export_app": "firecamp_v2.3.1 ↺",
         "__export_version": 1
     },
     "project": {
@@ -2254,6 +2254,10 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "Chat",
+            "description": ""
         }
     ],
     "requests": [],

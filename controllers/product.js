@@ -1,5 +1,6 @@
 const DB = require('../models/product');
-const subcatDb = require('../models/subcat')
+const subcatDb = require('../models/subcat');
+const Gallery = require('../utils/gallery')
 
 let add = async (req, res, next) => {
     let exitName = await DB.findOne({ name: req.body.name });
@@ -26,6 +27,8 @@ let patch = async (req, res, next) => {
     res.send({ "con": true, "msg": "Update success prodcut ", result });
 }
 let drop = async (req, res, next) => {
+    let prod = await DB.findById(req.params.id);
+    Gallery.deleteMultipleFiles(prod.images);
     let childcat = await DB.findById(req.params.id);
     await subcatDb.findByIdAndUpdate(childcat.subcat, { $pull: { childcats: childcat._id } })
     let result = await DB.findByIdAndDelete(req.params.id);
