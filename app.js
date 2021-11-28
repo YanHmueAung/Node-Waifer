@@ -59,6 +59,7 @@ app.use((err, req, res, next) => {
 })
 
 io.of("/chat").use(async (socket, next) => {
+    console.log(socket)
     let user = await helper.getTokenFromSocket(socket);
     if (user == 'blank') {
         next(new Error('Authentication Error By Tester'));
@@ -67,6 +68,7 @@ io.of("/chat").use(async (socket, next) => {
         next()
     }
 }).on("connection", (socket) => {
+    console.log(socket)
     require('./utils/chat').initialize(io, socket);
 })
 
@@ -86,4 +88,4 @@ let migrate = () => {
 }
 migrate()
 
-app.listen(process.env.PORT, console.log(`Running on ${process.env.PORT}`));
+server.listen(process.env.PORT, console.log(`Running on ${process.env.PORT}`));
