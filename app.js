@@ -49,9 +49,10 @@ app.use('/order', orderRouter);
 app.use('/api', apiRouter);
 
 
-// app.get('/', (req, res) => {
-//     throw new Error("not found");
-// })
+app.get('/', (req, res) => {
+    res.send("hello");
+    //throw new Error("not found");
+})
 
 app.use((err, req, res, next) => {
     err.status = err.status || 303;
